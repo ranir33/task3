@@ -1,0 +1,120 @@
+package ATMmachine;
+
+import java.util.Scanner;
+
+
+public class ATMinterface 
+{
+ private double balance;
+
+    public ATMinterface (double Balance) 
+    {
+        this.balance = Balance;
+    }
+
+    public boolean deposit(double amount)
+    {
+        if (amount > 0)
+        {
+            this.balance += amount;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public boolean withdraw(double amount)
+    {
+        if (amount > 0 && amount <= balance) 
+        {
+            this.balance -= amount;
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+    }
+
+    public double checkBalance()
+    {
+        return balance;
+    }
+}
+
+
+class ATM 
+{
+    private ATMinterface userAccount;
+    private Scanner sc;
+
+    public ATM(ATMinterface userAccount) 
+    {
+        this.userAccount = userAccount;
+        this.sc = new Scanner(System.in);
+    }
+
+    public void displayOptions() 
+    {
+        System.out.println("ATM Menu:");
+        System.out.println("1. Withdraw");
+        System.out.println("2. Deposit");
+        System.out.println("3. Check Balance");
+        System.out.println("4. Exit");
+    }
+
+    public void run()
+    {
+        while (true)
+        {
+            displayOptions();
+            System.out.println("");
+            System.out.print("Enter your choice: ");
+            int choice = sc.nextInt();
+            switch (choice)
+            {
+                case 1:
+                    System.out.print("Enter the withdrawal amount: ");
+                    double withdrawAmount = sc.nextDouble();
+                    if (userAccount.withdraw(withdrawAmount)) 
+                    {
+                        System.out.println("Withdrawn " + withdrawAmount);
+                        System.out.println("");
+                    } 
+                    else 
+                    {
+                        System.out.println("Invalid amount or insufficient balance.");
+                        System.out.println("");
+                    }
+                    break;
+                case 2:
+                    System.out.print("Enter the deposit amount: ");
+                    double depositAmount = sc.nextDouble();
+                    if (userAccount.deposit(depositAmount))
+                    {
+                        System.out.println("Deposited " + depositAmount);
+                        System.out.println("");
+                    } else 
+                    {
+                        System.out.println("Invalid amount.");
+                        System.out.println("");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Current balance: " + userAccount.checkBalance());
+                    System.out.println("");
+                    break;
+                case 4:
+                    System.out.println("Thank you for using the ATM. Goodbye!");
+                    System.out.println("");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println("");
+                    break;
+            }
+        }
+    }   
+}
